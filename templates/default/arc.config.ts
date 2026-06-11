@@ -4,5 +4,5 @@ export default defineArcConfig({
   name: "arc-astro-default",
   path: "/",
   sites: ["default"],
-  version: "0.0.1",
+  schemaVersion: "0.0.1",
 });
