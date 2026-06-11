@@ -1,0 +1,321 @@
+{
+  "collections": {
+    "front": {
+      "_id": "ARC0FRONT0000000000000000000",
+      "content_alias": "front",
+      "content_elements": [
+        {
+          "_id": "STORY00WELCOME0000000000000",
+          "canonical_url": "/welcome",
+          "credits": {
+            "by": [
+              {
+                "_id": "alex-editor",
+                "additional_properties": { "original": { "role": "Editor in Chief" } },
+                "image": { "url": "https://i.pravatar.cc/150?u=alex-editor" },
+                "name": "Alex Editor"
+              }
+            ]
+          },
+          "description": {
+            "basic": "This is the starter template's `front` collection rendered from arc.collections.json. Replace the fixture or set ARC_API_TOKEN to fetch live stories."
+          },
+          "display_date": "2026-06-10T08:00:00Z",
+          "headlines": { "basic": "Welcome to your Arc Astro site" },
+          "last_updated_date": "2026-06-10T08:00:00Z",
+          "promo_items": {
+            "basic": {
+              "_id": "img-welcome",
+              "alt_text": "Friendly landing illustration",
+              "height": 720,
+              "type": "image",
+              "url": "https://picsum.photos/seed/arc-welcome/1280/720",
+              "width": 1280
+            }
+          },
+          "taxonomy": { "primary_section": { "name": "Getting Started", "path": "/getting-started" } },
+          "type": "story",
+          "website_url": "/welcome"
+        },
+        {
+          "_id": "STORY00LIVECONTENT00000000000",
+          "canonical_url": "/live-content",
+          "credits": {
+            "by": [
+              {
+                "_id": "sam-platform",
+                "additional_properties": { "original": { "role": "Platform Engineer" } },
+                "image": { "url": "https://i.pravatar.cc/150?u=sam-platform" },
+                "name": "Sam Platform"
+              }
+            ]
+          },
+          "description": {
+            "basic": "Astro 6's live collections fetch content on each request. The @arc/collections loader wraps the Arc Content API so your pages stay fresh without rebuilds."
+          },
+          "display_date": "2026-06-09T15:30:00Z",
+          "headlines": { "basic": "Live collections, explained in 60 seconds" },
+          "last_updated_date": "2026-06-09T15:30:00Z",
+          "promo_items": {
+            "basic": {
+              "_id": "img-live",
+              "alt_text": "Diagram of a request flowing through an edge worker to a content API",
+              "height": 720,
+              "type": "image",
+              "url": "https://picsum.photos/seed/arc-live/1280/720",
+              "width": 1280
+            }
+          },
+          "taxonomy": { "primary_section": { "name": "Concepts", "path": "/concepts" } },
+          "type": "story",
+          "website_url": "/live-content"
+        },
+        {
+          "_id": "STORY00DEPLOY000000000000000",
+          "canonical_url": "/deploy",
+          "credits": {
+            "by": [
+              {
+                "_id": "jordan-devrel",
+                "additional_properties": { "original": { "role": "Developer Advocate" } },
+                "image": { "url": "https://i.pravatar.cc/150?u=jordan-devrel" },
+                "name": "Jordan DevRel"
+              }
+            ]
+          },
+          "description": {
+            "basic": "Cloudflare Workers gives you a global edge runtime out of the box. The @arc/astro integration generates the wrangler.jsonc so you can focus on routes and content."
+          },
+          "display_date": "2026-06-08T10:00:00Z",
+          "headlines": { "basic": "From template to production: deploying to Cloudflare" },
+          "last_updated_date": "2026-06-08T10:00:00Z",
+          "promo_items": {
+            "basic": {
+              "_id": "img-deploy",
+              "alt_text": "World map highlighting global edge regions",
+              "height": 720,
+              "type": "image",
+              "url": "https://picsum.photos/seed/arc-deploy/1280/720",
+              "width": 1280
+            }
+          },
+          "taxonomy": { "primary_section": { "name": "Deploy", "path": "/deploy" } },
+          "type": "story",
+          "website_url": "/deploy"
+        }
+      ],
+      "last_updated_date": "2026-06-10T08:00:00Z",
+      "type": "collection"
+    }
+  },
+  "stories": [
+    {
+      "_id": "STORY00WELCOME0000000000000",
+      "canonical_url": "/welcome",
+      "content_elements": [
+        {
+          "_id": "el-w1",
+          "content": "You're looking at the starter template's <b>fixture-mode</b> output. Every field on this page comes from <code>arc.collections.json</code>.",
+          "type": "text"
+        },
+        {
+          "_id": "el-w2",
+          "content": "What you can edit right now",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-w3",
+          "content": "Open <code>arc.collections.json</code> and change a headline. Save. The dev server hot-reloads and the new headline appears.",
+          "type": "text"
+        },
+        {
+          "_id": "el-w4",
+          "content": "Switching to live content",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-w5",
+          "content": "Set <code>ARC_API_TOKEN</code> in <code>.env</code> and unset <code>ARC_USE_FIXTURES</code>. The same pages now render whatever your Arc Content API returns — no code changes.",
+          "type": "text"
+        }
+      ],
+      "credits": {
+        "by": [
+          {
+            "_id": "alex-editor",
+            "additional_properties": { "original": { "role": "Editor in Chief" } },
+            "image": { "url": "https://i.pravatar.cc/150?u=alex-editor" },
+            "name": "Alex Editor"
+          }
+        ]
+      },
+      "description": {
+        "basic": "This is the starter template's `front` collection rendered from arc.collections.json. Replace the fixture or set ARC_API_TOKEN to fetch live stories."
+      },
+      "display_date": "2026-06-10T08:00:00Z",
+      "headlines": { "basic": "Welcome to your Arc Astro site" },
+      "last_updated_date": "2026-06-10T08:00:00Z",
+      "planning": { "story_length": { "word_count_actual": 180 } },
+      "promo_items": {
+        "basic": {
+          "_id": "img-welcome",
+          "alt_text": "Friendly landing illustration",
+          "height": 720,
+          "type": "image",
+          "url": "https://picsum.photos/seed/arc-welcome/1280/720",
+          "width": 1280
+        }
+      },
+      "taxonomy": {
+        "primary_section": { "name": "Getting Started", "path": "/getting-started" },
+        "tags": [
+          { "slug": "starter", "text": "starter" },
+          { "slug": "fixtures", "text": "fixtures" }
+        ]
+      },
+      "type": "story",
+      "website_url": "/welcome"
+    },
+    {
+      "_id": "STORY00LIVECONTENT00000000000",
+      "canonical_url": "/live-content",
+      "content_elements": [
+        {
+          "_id": "el-l1",
+          "content": "A <em>live collection</em> is a content collection whose entries are fetched on every request instead of baked into the build.",
+          "type": "text"
+        },
+        {
+          "_id": "el-l2",
+          "content": "The contract",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-l3",
+          "content": "You define a loader once in <code>src/live.config.ts</code>. The loader fetches data from somewhere — a CMS API, a database, a file. Astro calls it on each request and passes the result to your page.",
+          "type": "text"
+        },
+        {
+          "_id": "el-l4",
+          "content": "What <code>@arc/collections</code> adds",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-l5",
+          "content": "Two factories — <code>arcCollections({ alias })</code> for section fronts and <code>arcStory()</code> for individual stories. Both honor <code>ARC_USE_FIXTURES</code> so you can develop offline.",
+          "type": "text"
+        }
+      ],
+      "credits": {
+        "by": [
+          {
+            "_id": "sam-platform",
+            "additional_properties": { "original": { "role": "Platform Engineer" } },
+            "image": { "url": "https://i.pravatar.cc/150?u=sam-platform" },
+            "name": "Sam Platform"
+          }
+        ]
+      },
+      "description": {
+        "basic": "Astro 6's live collections fetch content on each request. The @arc/collections loader wraps the Arc Content API so your pages stay fresh without rebuilds."
+      },
+      "display_date": "2026-06-09T15:30:00Z",
+      "headlines": { "basic": "Live collections, explained in 60 seconds" },
+      "last_updated_date": "2026-06-09T15:30:00Z",
+      "planning": { "story_length": { "word_count_actual": 220 } },
+      "promo_items": {
+        "basic": {
+          "_id": "img-live",
+          "alt_text": "Diagram of a request flowing through an edge worker to a content API",
+          "height": 720,
+          "type": "image",
+          "url": "https://picsum.photos/seed/arc-live/1280/720",
+          "width": 1280
+        }
+      },
+      "taxonomy": {
+        "primary_section": { "name": "Concepts", "path": "/concepts" },
+        "tags": [
+          { "slug": "live-collections", "text": "live collections" },
+          { "slug": "astro", "text": "astro" }
+        ]
+      },
+      "type": "story",
+      "website_url": "/live-content"
+    },
+    {
+      "_id": "STORY00DEPLOY000000000000000",
+      "canonical_url": "/deploy",
+      "content_elements": [
+        {
+          "_id": "el-d1",
+          "content": "<code>pnpm build</code> produces a Worker bundle and <code>wrangler.jsonc</code>. Both are managed by the integration — you should not need to hand-edit them.",
+          "type": "text"
+        },
+        {
+          "_id": "el-d2",
+          "content": "First deploy",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-d3",
+          "content": "Run <code>npx wrangler deploy</code>. Cloudflare assigns your Worker a default <code>workers.dev</code> subdomain. Map a custom domain through the Cloudflare dashboard when you're ready.",
+          "type": "text"
+        },
+        {
+          "_id": "el-d4",
+          "content": "Production secrets",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-d5",
+          "content": "Inject <code>ARC_API_TOKEN</code> with <code>npx wrangler secret put ARC_API_TOKEN</code>. The token is scoped to your org + site + env in the Arc dashboard.",
+          "type": "text"
+        }
+      ],
+      "credits": {
+        "by": [
+          {
+            "_id": "jordan-devrel",
+            "additional_properties": { "original": { "role": "Developer Advocate" } },
+            "image": { "url": "https://i.pravatar.cc/150?u=jordan-devrel" },
+            "name": "Jordan DevRel"
+          }
+        ]
+      },
+      "description": {
+        "basic": "Cloudflare Workers gives you a global edge runtime out of the box. The @arc/astro integration generates the wrangler.jsonc so you can focus on routes and content."
+      },
+      "display_date": "2026-06-08T10:00:00Z",
+      "headlines": { "basic": "From template to production: deploying to Cloudflare" },
+      "last_updated_date": "2026-06-08T10:00:00Z",
+      "planning": { "story_length": { "word_count_actual": 280 } },
+      "promo_items": {
+        "basic": {
+          "_id": "img-deploy",
+          "alt_text": "World map highlighting global edge regions",
+          "height": 720,
+          "type": "image",
+          "url": "https://picsum.photos/seed/arc-deploy/1280/720",
+          "width": 1280
+        }
+      },
+      "taxonomy": {
+        "primary_section": { "name": "Deploy", "path": "/deploy" },
+        "tags": [
+          { "slug": "cloudflare", "text": "cloudflare" },
+          { "slug": "workers", "text": "workers" },
+          { "slug": "deploy", "text": "deploy" }
+        ]
+      },
+      "type": "story",
+      "website_url": "/deploy"
+    }
+  ]
+}

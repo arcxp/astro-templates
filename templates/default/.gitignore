@@ -1,0 +1,8 @@
+.astro/
+.env
+.env.local
+.wrangler/
+arc.dev.json
+dist/
+node_modules/
+wrangler.jsonc

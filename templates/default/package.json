@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "@arc/astro": "^0.0.1",
+    "@arc/collections": "^0.0.1",
+    "@astrojs/cloudflare": "^13.6.1",
+    "astro": "^6.4.4"
+  },
+  "devDependencies": {
+    "@arc/cli": "^0.0.1"
+  },
+  "name": "arc-astro-default",
+  "private": true,
+  "scripts": {
+    "astro": "astro",
+    "build": "astro build",
+    "dev": "arc dev"
+  },
+  "type": "module",
+  "version": "0.0.0"
+}

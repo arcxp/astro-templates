@@ -1,0 +1,10 @@
+{
+  "repo": "arcxp/astro-templates",
+  "templates": [
+    {
+      "description": "Minimal Arc/Astro starter.",
+      "name": "default",
+      "path": "templates/default"
+    }
+  ]
+}

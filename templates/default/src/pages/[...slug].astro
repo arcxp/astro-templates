@@ -1,0 +1,296 @@
+---
+import { getLiveEntry } from "astro:content";
+import { type ArcStoryShape, formatDisplayDate } from "../lib/arc-story";
+
+const result = await getLiveEntry("story", {
+  context: Astro.locals.arc,
+  website_url: Astro.url.pathname,
+});
+if (result.error) {
+  return new Response("Bad Gateway", { status: 502 });
+}
+if (!result.entry) {
+  return new Response("Not found", { status: 404 });
+}
+
+const story = result.entry.data as ArcStoryShape;
+const headline = story.headlines?.basic ?? "(untitled)";
+const desc = story.description?.basic;
+const img = story.promo_items?.basic;
+const author = story.credits?.by?.[0];
+const section = story.taxonomy?.primary_section?.name;
+const tags = story.taxonomy?.tags?.filter((t) => t.text) ?? [];
+const wordCount = story.planning?.story_length?.word_count_actual;
+const readingMinutes = wordCount && wordCount > 0 ? Math.max(1, Math.round(wordCount / 200)) : null;
+const formattedDate = formatDisplayDate(story.display_date ?? story.publish_date);
+
+const stripHtml = (s?: string): string => (s ?? "").replace(/<[^>]*>/g, "").trim();
+const hasContent = (s?: string): boolean => stripHtml(s).length > 0;
+
+const headlineNorm = stripHtml(headline).toLowerCase();
+const descNorm = stripHtml(desc).toLowerCase();
+
+const isDuplicateOfMeta = (s?: string): boolean => {
+  const n = stripHtml(s).toLowerCase();
+  if (!n) return false;
+  return n === headlineNorm || n === descNorm;
+};
+
+const bodyElements = (story.content_elements ?? []).filter((el) => {
+  if (el.type === "text" || el.type === "header") {
+    return hasContent(el.content) && !isDuplicateOfMeta(el.content);
+  }
+  if (el.type === "image") return !!el.url;
+  if (el.type === "list") return !!el.items && el.items.length > 0;
+  if (el.type === "divider") return true;
+  if (el.type === "blockquote" || el.type === "raw_html" || el.type === "oembed_response") {
+    return hasContent(el.content);
+  }
+  return false;
+});
+
+const headerTagFor = (level?: number): "h2" | "h3" | "h4" | "h5" | "h6" => {
+  const l = level ?? 3;
+  if (l <= 1) return "h2";
+  if (l === 2) return "h3";
+  if (l === 3) return "h4";
+  if (l === 4) return "h5";
+  return "h6";
+};
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{headline}</title>
+    {desc && <meta name="description" content={desc} />}
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+        max-width: 44rem;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+        color: #111;
+        background: #fafafa;
+        line-height: 1.65;
+      }
+      .section {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #888;
+        font-weight: 600;
+      }
+      h1.headline {
+        font-size: 2.25rem;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        margin: 0.5rem 0 1rem;
+      }
+      .lede {
+        font-size: 1.125rem;
+        color: #444;
+        margin: 0 0 1.5rem;
+      }
+      .byline {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 0;
+        border-top: 1px solid #e5e5e5;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 2rem;
+        font-size: 0.875rem;
+        color: #555;
+        flex-wrap: wrap;
+      }
+      .avatar {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .author-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+      }
+      .author-name {
+        font-weight: 600;
+        color: #222;
+      }
+      .author-role {
+        font-size: 0.75rem;
+        color: #888;
+      }
+      .meta {
+        margin-left: auto;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.8125rem;
+        color: #888;
+      }
+      figure.hero {
+        margin: 0 0 2rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+      figure.hero img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .body :where(h2, h3, h4, h5, h6) {
+        margin: 2rem 0 0.75rem;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+      }
+      .body h2 { font-size: 1.5rem; }
+      .body h3 { font-size: 1.25rem; }
+      .body h4, .body h5, .body h6 { font-size: 1.0625rem; }
+      .body p {
+        margin: 0 0 1rem;
+        font-size: 1.0625rem;
+      }
+      .body p a, .body li a { color: #0a5fa3; }
+      .body code {
+        font-family: ui-monospace, SFMono-Regular, monospace;
+        font-size: 0.9375em;
+        background: #f0f0f0;
+        padding: 0.1em 0.35em;
+        border-radius: 0.25rem;
+      }
+      .body figure { margin: 1.5rem 0; }
+      .body figure img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 0.375rem;
+      }
+      .body figcaption {
+        font-size: 0.8125rem;
+        color: #777;
+        margin-top: 0.5rem;
+        text-align: center;
+      }
+      .body blockquote {
+        border-left: 3px solid #ccc;
+        margin: 1.5rem 0;
+        padding: 0.25rem 0 0.25rem 1rem;
+        color: #444;
+        font-style: italic;
+      }
+      .body hr {
+        border: none;
+        border-top: 1px solid #e5e5e5;
+        margin: 2rem 0;
+      }
+      .body ul, .body ol { margin: 0 0 1rem 1.25rem; }
+      .body li { margin: 0.25rem 0; }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 2.5rem 0 0;
+      }
+      .tag {
+        display: inline-block;
+        padding: 0.25rem 0.625rem;
+        border: 1px solid #ddd;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        color: #555;
+        background: #fff;
+      }
+      a.back {
+        display: inline-block;
+        margin-top: 2.5rem;
+        font-size: 0.875rem;
+        color: #555;
+        text-decoration: none;
+      }
+      a.back:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    {section && <span class="section">{section}</span>}
+    <h1 class="headline">{headline}</h1>
+    {desc && <p class="lede">{desc}</p>}
+    {(author?.name || formattedDate || readingMinutes) && (
+      <div class="byline">
+        {author?.image?.url && <img class="avatar" src={author.image.url} alt="" />}
+        {author?.name && (
+          <div class="author-meta">
+            <span class="author-name">{author.name}</span>
+            {author.additional_properties?.original?.role && (
+              <span class="author-role">{author.additional_properties.original.role}</span>
+            )}
+          </div>
+        )}
+        <div class="meta">
+          {formattedDate && <span>{formattedDate}</span>}
+          {readingMinutes && <span>· {readingMinutes} min read</span>}
+        </div>
+      </div>
+    )}
+    {img?.url && (
+      <figure class="hero">
+        <img src={img.url} alt={img.alt_text ?? ""} width={img.width} height={img.height} />
+        {img.caption && <figcaption>{img.caption}</figcaption>}
+      </figure>
+    )}
+    <div class="body">
+      {bodyElements.map((el) => {
+        if (el.type === "header") {
+          const Tag = headerTagFor(el.level);
+          return <Tag set:html={el.content!} />;
+        }
+        if (el.type === "text") {
+          return <p set:html={el.content!} />;
+        }
+        if (el.type === "image") {
+          return (
+            <figure>
+              <img
+                src={el.url}
+                alt={el.alt_text ?? ""}
+                width={el.width}
+                height={el.height}
+                loading="lazy"
+              />
+              {el.caption && <figcaption>{el.caption}</figcaption>}
+            </figure>
+          );
+        }
+        if (el.type === "list") {
+          const ListTag = el.list_type === "ordered" ? "ol" : "ul";
+          return (
+            <ListTag>
+              {el.items?.map((item) => (
+                <li set:html={item.content ?? ""} />
+              ))}
+            </ListTag>
+          );
+        }
+        if (el.type === "blockquote") {
+          return <blockquote set:html={el.content!} />;
+        }
+        if (el.type === "divider") {
+          return <hr />;
+        }
+        if (el.type === "raw_html" || el.type === "oembed_response") {
+          return <div set:html={el.content!} />;
+        }
+        return null;
+      })}
+    </div>
+    {tags.length > 0 && (
+      <div class="tags">
+        {tags.map((t) => <span class="tag">{t.text}</span>)}
+      </div>
+    )}
+    <a class="back" href="/">← Back to homepage</a>
+  </body>
+</html>
