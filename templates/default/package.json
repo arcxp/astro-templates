@@ -12,7 +12,7 @@
   "private": true,
   "scripts": {
     "astro": "astro",
-    "build": "astro build",
+    "build": "arc build",
     "dev": "arc dev"
   },
   "type": "module",

@@ -30,6 +30,18 @@ copy the checked-in `example.arc.dev.json` (above) to create it. Edit it
 to change the org / env / site identifiers your local dev server runs
 under. `arc dev` watches the file and restarts the server on save.
 
+## Build
+
+```sh
+pnpm build
+```
+
+`pnpm build` delegates to `arc build`, which validates `arc.config.ts`,
+runs `astro build`, and assembles the deploy artifacts under `dist/`:
+the Worker bundle and its static assets in `dist/worker/`, and the
+generated manifest, build metadata, and `wrangler.generated.jsonc` in
+`dist/arc/`. Set `LOG_LEVEL=debug` to trace each build step.
+
 ## Environment
 
 | Variable | Required | Description |
