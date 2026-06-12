@@ -1,5 +1,7 @@
 ---
 import { getLiveEntry } from "astro:content";
+import { withBase } from "@arc/astro/runtime";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import { type ArcStoryShape, formatDisplayDate } from "../lib/arc-story";
 
 const result = await getLiveEntry("story", {
@@ -58,22 +60,92 @@ const headerTagFor = (level?: number): "h2" | "h3" | "h4" | "h5" | "h6" => {
   return "h6";
 };
 ---
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>{headline}</title>
-    {desc && <meta name="description" content={desc} />}
-    <style>
-      :root {
-        color-scheme: light;
-      }
-      body {
-        font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+<BaseLayout title={headline} description={desc}>
+  <article class="article">
+    {section && <span class="section">{section}</span>}
+    <h1 class="headline">{headline}</h1>
+    {desc && <p class="lede">{desc}</p>}
+    {(author?.name || formattedDate || readingMinutes) && (
+      <div class="byline">
+        {author?.image?.url && <img class="avatar" src={author.image.url} alt="" />}
+        {author?.name && (
+          <div class="author-meta">
+            <span class="author-name">{author.name}</span>
+            {author.additional_properties?.original?.role && (
+              <span class="author-role">{author.additional_properties.original.role}</span>
+            )}
+          </div>
+        )}
+        <div class="meta">
+          {formattedDate && <span>{formattedDate}</span>}
+          {readingMinutes && <span>· {readingMinutes} min read</span>}
+        </div>
+      </div>
+    )}
+    {img?.url && (
+      <figure class="hero">
+        <img src={img.url} alt={img.alt_text ?? ""} width={img.width} height={img.height} />
+        {img.caption && <figcaption>{img.caption}</figcaption>}
+      </figure>
+    )}
+    <div class="body">
+      {bodyElements.map((el) => {
+        if (el.type === "header") {
+          const Tag = headerTagFor(el.level);
+          return <Tag set:html={el.content!} />;
+        }
+        if (el.type === "text") {
+          return <p set:html={el.content!} />;
+        }
+        if (el.type === "image") {
+          return (
+            <figure>
+              <img
+                src={el.url}
+                alt={el.alt_text ?? ""}
+                width={el.width}
+                height={el.height}
+                loading="lazy"
+              />
+              {el.caption && <figcaption>{el.caption}</figcaption>}
+            </figure>
+          );
+        }
+        if (el.type === "list") {
+          const ListTag = el.list_type === "ordered" ? "ol" : "ul";
+          return (
+            <ListTag>
+              {el.items?.map((item) => (
+                <li set:html={item.content ?? ""} />
+              ))}
+            </ListTag>
+          );
+        }
+        if (el.type === "blockquote") {
+          return <blockquote set:html={el.content!} />;
+        }
+        if (el.type === "divider") {
+          return <hr />;
+        }
+        if (el.type === "raw_html" || el.type === "oembed_response") {
+          return <div set:html={el.content!} />;
+        }
+        return null;
+      })}
+    </div>
+    {tags.length > 0 && (
+      <div class="tags">
+        {tags.map((t) => <span class="tag">{t.text}</span>)}
+      </div>
+    )}
+    <a href={withBase("/")} class="back">← Back to homepage</a>
+  </article>
+</BaseLayout>
+
+<style>
+      .article {
         max-width: 44rem;
         margin: 0 auto;
-        padding: 2rem 1.5rem 4rem;
-        color: #111;
-        background: #fafafa;
         line-height: 1.65;
       }
       .section {
@@ -212,85 +284,4 @@ const headerTagFor = (level?: number): "h2" | "h3" | "h4" | "h5" | "h6" => {
         text-decoration: none;
       }
       a.back:hover { text-decoration: underline; }
-    </style>
-  </head>
-  <body>
-    {section && <span class="section">{section}</span>}
-    <h1 class="headline">{headline}</h1>
-    {desc && <p class="lede">{desc}</p>}
-    {(author?.name || formattedDate || readingMinutes) && (
-      <div class="byline">
-        {author?.image?.url && <img class="avatar" src={author.image.url} alt="" />}
-        {author?.name && (
-          <div class="author-meta">
-            <span class="author-name">{author.name}</span>
-            {author.additional_properties?.original?.role && (
-              <span class="author-role">{author.additional_properties.original.role}</span>
-            )}
-          </div>
-        )}
-        <div class="meta">
-          {formattedDate && <span>{formattedDate}</span>}
-          {readingMinutes && <span>· {readingMinutes} min read</span>}
-        </div>
-      </div>
-    )}
-    {img?.url && (
-      <figure class="hero">
-        <img src={img.url} alt={img.alt_text ?? ""} width={img.width} height={img.height} />
-        {img.caption && <figcaption>{img.caption}</figcaption>}
-      </figure>
-    )}
-    <div class="body">
-      {bodyElements.map((el) => {
-        if (el.type === "header") {
-          const Tag = headerTagFor(el.level);
-          return <Tag set:html={el.content!} />;
-        }
-        if (el.type === "text") {
-          return <p set:html={el.content!} />;
-        }
-        if (el.type === "image") {
-          return (
-            <figure>
-              <img
-                src={el.url}
-                alt={el.alt_text ?? ""}
-                width={el.width}
-                height={el.height}
-                loading="lazy"
-              />
-              {el.caption && <figcaption>{el.caption}</figcaption>}
-            </figure>
-          );
-        }
-        if (el.type === "list") {
-          const ListTag = el.list_type === "ordered" ? "ol" : "ul";
-          return (
-            <ListTag>
-              {el.items?.map((item) => (
-                <li set:html={item.content ?? ""} />
-              ))}
-            </ListTag>
-          );
-        }
-        if (el.type === "blockquote") {
-          return <blockquote set:html={el.content!} />;
-        }
-        if (el.type === "divider") {
-          return <hr />;
-        }
-        if (el.type === "raw_html" || el.type === "oembed_response") {
-          return <div set:html={el.content!} />;
-        }
-        return null;
-      })}
-    </div>
-    {tags.length > 0 && (
-      <div class="tags">
-        {tags.map((t) => <span class="tag">{t.text}</span>)}
-      </div>
-    )}
-    <a class="back" href="/">← Back to homepage</a>
-  </body>
-</html>
+</style>
