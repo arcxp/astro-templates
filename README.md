@@ -4,8 +4,7 @@ Astro templates for the Arc runtime.
 
 ## Using a template
 
-Scaffold a new project with Astro's standard scaffolder. `create-astro`
-handles the clone, install, and `git init`:
+Scaffold a new project with Astro's standard scaffolder. `create-astro` handles the clone, install, and `git init`:
 
 ```sh
 npm create astro@latest <my-project> -- --template arcxp/astro-templates/templates/default
@@ -13,14 +12,11 @@ npm create astro@latest <my-project> -- --template arcxp/astro-templates/templat
 
 ## Available templates
 
-See [`manifest.json`](./manifest.json) for the current list. The manifest
-is machine-readable so tooling can enumerate, describe, and scaffold from
-templates programmatically.
+See [`manifest.json`](./manifest.json) for the current list. The manifest is machine-readable so tooling can enumerate, describe, and scaffold from templates programmatically.
 
 ## Adding a template
 
-1. Add a directory under `templates/<name>/` containing a working Astro
-   project. See `templates/default/` for the minimum shape.
+1. Add a directory under `templates/<name>/` containing a working Astro project. See `templates/default/` for the minimum shape.
 2. Append an entry to `manifest.json`:
    ```json
    {
