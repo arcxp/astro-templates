@@ -4,7 +4,7 @@ import { type ArcStoryShape } from "../lib/arc-story";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import StoryCard from "../components/StoryCard.astro";
 
-const result = await getLiveCollection("front", { context: Astro.locals.arc });
+const result = await getLiveCollection("blog", { context: Astro.locals.arc });
 let stories: ArcStoryShape[] = [];
 if (result.error) {
   Astro.response.status = 502;
@@ -13,12 +13,12 @@ if (result.error) {
 }
 const errored = !!result.error;
 ---
-<BaseLayout title="Section front — Arc Astro">
-  <h1>Section front</h1>
+<BaseLayout title="Blog — Arc Astro">
+  <h1>Blog</h1>
   {errored ? (
     <p class="empty">Content is temporarily unavailable. Please try again shortly.</p>
   ) : stories.length === 0 ? (
-    <p class="empty">No stories in this collection yet.</p>
+    <p class="empty">No posts in this collection yet.</p>
   ) : (
     <ul class="grid">
       {stories.map((story) => (

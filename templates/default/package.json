@@ -13,6 +13,7 @@
   "scripts": {
     "astro": "astro",
     "build": "arc build",
+    "deploy": "arc deploy",
     "dev": "arc dev"
   },
   "type": "module",

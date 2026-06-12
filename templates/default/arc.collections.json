@@ -106,6 +106,80 @@
       ],
       "last_updated_date": "2026-06-10T08:00:00Z",
       "type": "collection"
+    },
+    "blog": {
+      "_id": "ARC0BLOG00000000000000000000",
+      "content_alias": "blog",
+      "content_elements": [
+        {
+          "_id": "STORY00FIRSTPOST0000000000000",
+          "canonical_url": "/blog/your-first-blog-post",
+          "credits": {
+            "by": [
+              {
+                "_id": "alex-editor",
+                "additional_properties": { "original": { "role": "Editor in Chief" } },
+                "image": { "url": "https://i.pravatar.cc/150?u=alex-editor" },
+                "name": "Alex Editor"
+              }
+            ]
+          },
+          "description": {
+            "basic": "A starter blog post showing how the `blog` collection renders through the same base-aware pages as the front."
+          },
+          "display_date": "2026-06-11T09:00:00Z",
+          "headlines": { "basic": "Your first blog post" },
+          "last_updated_date": "2026-06-11T09:00:00Z",
+          "promo_items": {
+            "basic": {
+              "_id": "img-firstpost",
+              "alt_text": "Notebook and pen on a desk",
+              "height": 720,
+              "type": "image",
+              "url": "https://picsum.photos/seed/arc-blog-first/1280/720",
+              "width": 1280
+            }
+          },
+          "taxonomy": { "primary_section": { "name": "Blog", "path": "/blog" } },
+          "type": "story",
+          "website_url": "/blog/your-first-blog-post"
+        },
+        {
+          "_id": "STORY00SECONDPOST000000000000",
+          "canonical_url": "/blog/writing-with-content-elements",
+          "credits": {
+            "by": [
+              {
+                "_id": "sam-platform",
+                "additional_properties": { "original": { "role": "Platform Engineer" } },
+                "image": { "url": "https://i.pravatar.cc/150?u=sam-platform" },
+                "name": "Sam Platform"
+              }
+            ]
+          },
+          "description": {
+            "basic": "Arc stories are made of `content_elements`. This post walks through the element types the template knows how to render."
+          },
+          "display_date": "2026-06-11T11:00:00Z",
+          "headlines": { "basic": "Writing with content elements" },
+          "last_updated_date": "2026-06-11T11:00:00Z",
+          "promo_items": {
+            "basic": {
+              "_id": "img-secondpost",
+              "alt_text": "Stacked building blocks",
+              "height": 720,
+              "type": "image",
+              "url": "https://picsum.photos/seed/arc-blog-second/1280/720",
+              "width": 1280
+            }
+          },
+          "taxonomy": { "primary_section": { "name": "Blog", "path": "/blog" } },
+          "type": "story",
+          "website_url": "/blog/writing-with-content-elements"
+        }
+      ],
+      "last_updated_date": "2026-06-11T11:00:00Z",
+      "type": "collection"
     }
   },
   "stories": [
@@ -316,6 +390,142 @@
       },
       "type": "story",
       "website_url": "/deploy"
+    },
+    {
+      "_id": "STORY00FIRSTPOST0000000000000",
+      "canonical_url": "/blog/your-first-blog-post",
+      "content_elements": [
+        {
+          "_id": "el-b1",
+          "content": "This is your first blog post, served from the <code>blog</code> collection in <code>arc.collections.json</code>. It renders through the very same <code>[...slug].astro</code> page as the front stories.",
+          "type": "text"
+        },
+        {
+          "_id": "el-b2",
+          "content": "Editing this post",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-b3",
+          "content": "Change the <code>headlines.basic</code> or <code>content_elements</code> here, save, and the dev server hot-reloads with your new copy.",
+          "type": "text"
+        },
+        {
+          "_id": "el-b4",
+          "content": "Notice the story link on the blog listing was built with <code>withBase()</code> — so it keeps working even after you set a base <code>path</code> in <code>arc.config.ts</code>.",
+          "type": "text"
+        }
+      ],
+      "credits": {
+        "by": [
+          {
+            "_id": "alex-editor",
+            "additional_properties": { "original": { "role": "Editor in Chief" } },
+            "image": { "url": "https://i.pravatar.cc/150?u=alex-editor" },
+            "name": "Alex Editor"
+          }
+        ]
+      },
+      "description": {
+        "basic": "A starter blog post showing how the `blog` collection renders through the same base-aware pages as the front."
+      },
+      "display_date": "2026-06-11T09:00:00Z",
+      "headlines": { "basic": "Your first blog post" },
+      "last_updated_date": "2026-06-11T09:00:00Z",
+      "planning": { "story_length": { "word_count_actual": 160 } },
+      "promo_items": {
+        "basic": {
+          "_id": "img-firstpost",
+          "alt_text": "Notebook and pen on a desk",
+          "height": 720,
+          "type": "image",
+          "url": "https://picsum.photos/seed/arc-blog-first/1280/720",
+          "width": 1280
+        }
+      },
+      "taxonomy": {
+        "primary_section": { "name": "Blog", "path": "/blog" },
+        "tags": [
+          { "slug": "starter", "text": "starter" },
+          { "slug": "blog", "text": "blog" }
+        ]
+      },
+      "type": "story",
+      "website_url": "/blog/your-first-blog-post"
+    },
+    {
+      "_id": "STORY00SECONDPOST000000000000",
+      "canonical_url": "/blog/writing-with-content-elements",
+      "content_elements": [
+        {
+          "_id": "el-c1",
+          "content": "An Arc story body is an ordered list of <code>content_elements</code>. The template renders the common ones for you.",
+          "type": "text"
+        },
+        {
+          "_id": "el-c2",
+          "content": "Element types",
+          "level": 2,
+          "type": "header"
+        },
+        {
+          "_id": "el-c3",
+          "content": "Paragraphs (<code>text</code>), headers, images, lists, blockquotes, and dividers are all supported out of the box:",
+          "type": "text"
+        },
+        {
+          "_id": "el-c4",
+          "items": [
+            { "_id": "el-c4a", "content": "<code>text</code> — a paragraph of rich text", "type": "text" },
+            { "_id": "el-c4b", "content": "<code>header</code> — a section heading", "type": "text" },
+            { "_id": "el-c4c", "content": "<code>image</code> — a figure with optional caption", "type": "text" }
+          ],
+          "list_type": "unordered",
+          "type": "list"
+        },
+        {
+          "_id": "el-c5",
+          "content": "Add elements in <code>arc.collections.json</code> and they appear here — no page changes required.",
+          "type": "blockquote"
+        }
+      ],
+      "credits": {
+        "by": [
+          {
+            "_id": "sam-platform",
+            "additional_properties": { "original": { "role": "Platform Engineer" } },
+            "image": { "url": "https://i.pravatar.cc/150?u=sam-platform" },
+            "name": "Sam Platform"
+          }
+        ]
+      },
+      "description": {
+        "basic": "Arc stories are made of `content_elements`. This post walks through the element types the template knows how to render."
+      },
+      "display_date": "2026-06-11T11:00:00Z",
+      "headlines": { "basic": "Writing with content elements" },
+      "last_updated_date": "2026-06-11T11:00:00Z",
+      "planning": { "story_length": { "word_count_actual": 140 } },
+      "promo_items": {
+        "basic": {
+          "_id": "img-secondpost",
+          "alt_text": "Stacked building blocks",
+          "height": 720,
+          "type": "image",
+          "url": "https://picsum.photos/seed/arc-blog-second/1280/720",
+          "width": 1280
+        }
+      },
+      "taxonomy": {
+        "primary_section": { "name": "Blog", "path": "/blog" },
+        "tags": [
+          { "slug": "content-elements", "text": "content elements" },
+          { "slug": "blog", "text": "blog" }
+        ]
+      },
+      "type": "story",
+      "website_url": "/blog/writing-with-content-elements"
     }
   ]
 }

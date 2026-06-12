@@ -1,0 +1,60 @@
+---
+import { withBase } from "@arc/astro/runtime";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <style is:global>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+        color: #111;
+        background: #fafafa;
+      }
+      nav {
+        display: flex;
+        gap: 1.25rem;
+        margin: 0 0 2rem;
+        font-size: 0.9375rem;
+      }
+      nav a {
+        color: #0a5fa3;
+        text-decoration: none;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
+      h1 {
+        font-size: 2rem;
+        margin: 0 0 2rem;
+        letter-spacing: -0.02em;
+      }
+      .empty {
+        color: #888;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href={withBase("/")}>Home</a>
+      <a href={withBase("/blog")}>Blog</a>
+    </nav>
+    <slot />
+  </body>
+</html>

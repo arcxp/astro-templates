@@ -15,6 +15,15 @@ export const collections = {
       useFixtures: ARC_USE_FIXTURES,
     }),
   }),
+  blog: defineLiveCollection({
+    loader: arcCollections({
+      alias: "blog",
+      fixtures,
+      logger,
+      token: ARC_API_TOKEN,
+      useFixtures: ARC_USE_FIXTURES,
+    }),
+  }),
   story: defineLiveCollection({
     loader: arcStory({
       fixtures,
