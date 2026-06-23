@@ -31,6 +31,8 @@ pnpm build
 
 `pnpm build` delegates to `arc build`, which validates `arc.config.ts`, runs `astro build`, and assembles the deploy artifacts under `dist/`: the Worker bundle and its static assets in `dist/worker/`, and the generated manifest, build metadata, and `wrangler.generated.jsonc` in `dist/arc/`. Set `LOG_LEVEL=debug` to trace each build step.
 
+**Pin `ASTRO_KEY` for reproducible builds.** Astro generates a fresh server-island encryption key on every build unless `ASTRO_KEY` is set, which makes the Worker bundle — and therefore the deploy release id — change each build, so `arc deploy` re-uploads an otherwise-unchanged site. Generate a key once with `pnpm exec astro create-key` and set `ASTRO_KEY` in your build environment (see `.env.example`). In production it's a managed per-site secret.
+
 ## Deploy
 
 ```sh
@@ -39,7 +41,7 @@ pnpm run deploy --env <name>
 
 `pnpm run deploy` delegates to `arc deploy`, which ships your built site to the named environment and prints a summary. Run `pnpm build` first — deploy uploads what `dist/` already contains and does not rebuild, and an unchanged build is detected and skipped.
 
-> **Use `pnpm run deploy`, not `pnpm deploy`.** `deploy` is a built-in pnpm command, so the bare `pnpm deploy` shorthand runs *that* built-in instead of this script — it never reaches `arc deploy` and fails with errors like `No project was selected for deployment` or `Unknown option: 'env'`. Always invoke it as `pnpm run deploy` (or `pnpm exec arc deploy`). `build`/`dev` don't collide with pnpm built-ins, which is why their shorthands work and `deploy`'s doesn't.
+> **Use `pnpm run deploy`, not `pnpm deploy`.** `deploy` is a built-in pnpm command, so the bare `pnpm deploy` shorthand runs _that_ built-in instead of this script — it never reaches `arc deploy` and fails with errors like `No project was selected for deployment` or `Unknown option: 'env'`. Always invoke it as `pnpm run deploy` (or `pnpm exec arc deploy`). `build`/`dev` don't collide with pnpm built-ins, which is why their shorthands work and `deploy`'s doesn't.
 
 `--env` is **required** — there is no default, so a deploy can't silently target the wrong environment. Pass `--dry-run` to preview what would ship without uploading, or `--force` to re-deploy an unchanged build.
 
@@ -53,7 +55,7 @@ There are three kinds of link, and only one of them touches the base:
 
 2. **Cross-MX / cross-section links — also verbatim.** A link from this MX to a different one (e.g. `/politics/elections`, `/business`) is a full domain-root path served by another Worker. Write it as a plain `<a href="/politics/elections">`. Do **not** prefix it — it is not your route.
 
-3. **Your own routes — prefix with the base.** The home (`/`) and the blog listing (`/blog`) are *this* MX's Astro routes, so their hardcoded nav links must carry the mount prefix. Use the `withBase` helper from `@arc/astro/runtime` — it reads this MX's base (`import.meta.env.BASE_URL`) for you, normalizes the trailing slash, and leaves `#`/external hrefs alone:
+3. **Your own routes — prefix with the base.** The home (`/`) and the blog listing (`/blog`) are _this_ MX's Astro routes, so their hardcoded nav links must carry the mount prefix. Use the `withBase` helper from `@arc/astro/runtime` — it reads this MX's base (`import.meta.env.BASE_URL`) for you, normalizes the trailing slash, and leaves `#`/external hrefs alone:
 
    ```astro
    ---
@@ -69,11 +71,11 @@ There are three kinds of link, and only one of them touches the base:
 
 ## Environment
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `ARC_API_TOKEN` | Production only | Bearer token for the Arc Content API. Optional locally when running fixtures. |
-| `ARC_USE_FIXTURES` | No (default `false`) | Serves content from `arc.collections.json` instead of the live API. On by default for local dev (see `.env.example`). To ship a build that serves fixtures with no Content API token, build with `arc build --use-fixtures` — it bakes fixture mode into the output. A normal build uses live mode. |
-| `LOG_LEVEL` | No (default `info`) | One of `debug` / `info` / `warn` / `error` / `silent`. Controls the `@arc/collections` logger verbosity. Set to `debug` locally to see every fetch and fixture lookup. |
+| Variable           | Required             | Description                                                                                                                                                                                |
+| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ARC_API_TOKEN`    | Production only      | Bearer token for the Arc Content API. Optional locally when running fixtures.                                                                                                              |
+| `ARC_USE_FIXTURES` | No (default `false`) | Set to `true` to serve content from `arc.collections.json` instead of the live API. Only takes effect during `astro dev`; production builds always use live mode regardless of this value. |
+| `LOG_LEVEL`        | No (default `info`)  | One of `debug` / `info` / `warn` / `error` / `silent`. Controls the `@arc/collections` logger verbosity. Set to `debug` locally to see every fetch and fixture lookup.                     |
 
 Copy `.env.example` to `.env` to get started with local defaults:
 
