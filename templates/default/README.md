@@ -29,9 +29,33 @@ pnpm dev
 pnpm build
 ```
 
-`pnpm build` delegates to `arc build`, which validates `arc.config.ts`, runs `astro build`, and assembles the deploy artifacts under `dist/`: the Worker bundle and its static assets in `dist/worker/`, and the generated manifest, build metadata, and `wrangler.generated.jsonc` in `dist/arc/`. Set `LOG_LEVEL=debug` to trace each build step.
+`pnpm build` delegates to `arc build`, which validates `arc.config.ts`, runs `astro build`, and assembles the deploy artifacts under `dist/`: the server runtime bundle, static assets, generated manifest, and build metadata. Set `LOG_LEVEL=debug` to trace each build step.
 
-**Pin `ASTRO_KEY` for reproducible builds.** Astro generates a fresh server-island encryption key on every build unless `ASTRO_KEY` is set, which makes the Worker bundle — and therefore the deploy release id — change each build, so `arc deploy` re-uploads an otherwise-unchanged site. Generate a key once with `pnpm exec astro create-key` and set `ASTRO_KEY` in your build environment (see `.env.example`). In production it's a managed per-site secret.
+**Pin `ASTRO_KEY` for reproducible builds.** Astro generates a fresh server-island encryption key on every build unless `ASTRO_KEY` is set, which makes the server runtime bundle — and therefore the deploy release id — change each build, so `arc deploy` re-uploads an otherwise-unchanged site. Generate a key once with `pnpm exec astro create-key` and set `ASTRO_KEY` in your build environment (see `.env.example`). In production it's a managed per-site secret.
+
+## Static assets and cacheability
+
+Whichever compute provider serves the built Astro distribution should expose the static asset tree emitted by `arc build`. To let the CDN cache static files aggressively without manual invalidation, prefer content-hashed filenames for assets owned by the MX.
+
+Use `src/assets/` for app-owned images, icons, fonts, and other files that should get hashed names. Import them from Astro components, pages, or CSS so Astro/Vite can add them to the build graph:
+
+```astro
+---
+import logoUrl from "../assets/logo.svg?no-inline";
+---
+
+<img src={logoUrl} alt="Site logo" width="48" height="48" />
+```
+
+The `?no-inline` suffix is important for small assets, especially SVG icons: it prevents Vite from embedding the file as a data URL in the HTML or JS bundle, and instead emits a separate file with a content hash in its filename. When the file contents stay the same, the URL stays the same and the CDN can keep serving the cached file. When the file changes, the hash changes and browsers request the new URL.
+
+Do not wrap imported asset URLs with `withBase()`. The imported value is already the final public URL for the build, including this MX's configured base path.
+
+Reserve `public/` for files that must keep an exact, stable name, such as `robots.txt`, `favicon.ico`, web app manifests, or third-party verification files. Files in `public/` are copied as-is: they are not transformed, bundled, hashed, or affected by Rollup filename settings. If you place a logo or icon in `public/` and reference it as `/assets/logo.svg`, you are choosing a stable filename and giving up automatic cache busting for that file.
+
+For groups of local assets selected by data, use static imports or `import.meta.glob()` so the build can still see the files. Avoid building local asset URLs with string concatenation at runtime; dynamic strings cannot be fingerprinted because the bundler cannot know which files to emit.
+
+Images returned by Arc Content API fields, such as story promo images and author images, are remote content URLs. They are not part of this local build asset graph, so do not move or import them just to satisfy this rule.
 
 ## Deploy
 
@@ -53,7 +77,7 @@ There are three kinds of link, and only one of them touches the base:
 
 1. **Content links — used verbatim.** A Content API `canonical_url` is the complete, authoritative path of a story (e.g. `/news/blog/my-entry`). Link to it with `canonical_url` exactly as returned, and look stories up with the requested path exactly as received — `website_url: Astro.url.pathname`. Never strip a base off the lookup and never prefix a canonical URL: the click → request → lookup round-trips only if nothing transforms the path. See `src/pages/[...slug].astro` and the `<a href={story.canonical_url}>` links in `StoryCard`.
 
-2. **Cross-MX / cross-section links — also verbatim.** A link from this MX to a different one (e.g. `/politics/elections`, `/business`) is a full domain-root path served by another Worker. Write it as a plain `<a href="/politics/elections">`. Do **not** prefix it — it is not your route.
+2. **Cross-MX / cross-section links — also verbatim.** A link from this MX to a different one (e.g. `/politics/elections`, `/business`) is a full domain-root path served by another deployment. Write it as a plain `<a href="/politics/elections">`. Do **not** prefix it — it is not your route.
 
 3. **Your own routes — prefix with the base.** The home (`/`) and the blog listing (`/blog`) are _this_ MX's Astro routes, so their hardcoded nav links must carry the mount prefix. Use the `withBase` helper from `@arc/astro/runtime` — it reads this MX's base (`import.meta.env.BASE_URL`) for you, normalizes the trailing slash, and leaves `#`/external hrefs alone:
 
@@ -83,4 +107,4 @@ Copy `.env.example` to `.env` to get started with local defaults:
 cp .env.example .env
 ```
 
-Set these in a `.env` file at the project root for local development. In production, inject them as secrets through your deployment platform (e.g. Cloudflare Workers secrets).
+Set these in a `.env` file at the project root for local development. In production, inject them as secrets through your deployment platform's secret manager.

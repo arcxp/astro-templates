@@ -59,7 +59,7 @@
           "promo_items": {
             "basic": {
               "_id": "img-live",
-              "alt_text": "Diagram of a request flowing through an edge worker to a content API",
+              "alt_text": "Diagram of a request flowing through a server runtime to a content API",
               "height": 720,
               "type": "image",
               "url": "https://picsum.photos/seed/arc-live/1280/720",
@@ -84,10 +84,10 @@
             ]
           },
           "description": {
-            "basic": "Cloudflare Workers gives you a global edge runtime out of the box. The @arc/astro integration generates the wrangler.jsonc so you can focus on routes and content."
+            "basic": "The Arc/Astro build produces a portable server runtime bundle and static assets so you can choose the compute provider that fits your platform."
           },
           "display_date": "2026-06-08T10:00:00Z",
-          "headlines": { "basic": "From template to production: deploying to Cloudflare" },
+          "headlines": { "basic": "From template to production: deploying your Astro site" },
           "last_updated_date": "2026-06-08T10:00:00Z",
           "promo_items": {
             "basic": {
@@ -304,7 +304,7 @@
       "promo_items": {
         "basic": {
           "_id": "img-live",
-          "alt_text": "Diagram of a request flowing through an edge worker to a content API",
+          "alt_text": "Diagram of a request flowing through a server runtime to a content API",
           "height": 720,
           "type": "image",
           "url": "https://picsum.photos/seed/arc-live/1280/720",
@@ -327,7 +327,7 @@
       "content_elements": [
         {
           "_id": "el-d1",
-          "content": "<code>pnpm build</code> produces a Worker bundle and <code>wrangler.jsonc</code>. Both are managed by the integration — you should not need to hand-edit them.",
+          "content": "<code>pnpm build</code> produces a server runtime bundle, static assets, and Arc deploy metadata. These artifacts are managed by the integration — you should not need to hand-edit them.",
           "type": "text"
         },
         {
@@ -338,7 +338,7 @@
         },
         {
           "_id": "el-d3",
-          "content": "Run <code>npx wrangler deploy</code>. Cloudflare assigns your Worker a default <code>workers.dev</code> subdomain. Map a custom domain through the Cloudflare dashboard when you're ready.",
+          "content": "Run your platform's deploy command with the artifacts produced by <code>pnpm build</code>. Map a custom domain through your hosting provider when you're ready.",
           "type": "text"
         },
         {
@@ -349,7 +349,7 @@
         },
         {
           "_id": "el-d5",
-          "content": "Inject <code>ARC_API_TOKEN</code> with <code>npx wrangler secret put ARC_API_TOKEN</code>. The token is scoped to your org + site + env in the Arc dashboard.",
+          "content": "Inject <code>ARC_API_TOKEN</code> through your deployment platform's secret manager. The token is scoped to your org + site + env in the Arc dashboard.",
           "type": "text"
         }
       ],
@@ -364,10 +364,10 @@
         ]
       },
       "description": {
-        "basic": "Cloudflare Workers gives you a global edge runtime out of the box. The @arc/astro integration generates the wrangler.jsonc so you can focus on routes and content."
+        "basic": "The Arc/Astro build produces a portable server runtime bundle and static assets so you can choose the compute provider that fits your platform."
       },
       "display_date": "2026-06-08T10:00:00Z",
-      "headlines": { "basic": "From template to production: deploying to Cloudflare" },
+      "headlines": { "basic": "From template to production: deploying your Astro site" },
       "last_updated_date": "2026-06-08T10:00:00Z",
       "planning": { "story_length": { "word_count_actual": 280 } },
       "promo_items": {
@@ -383,8 +383,8 @@
       "taxonomy": {
         "primary_section": { "name": "Deploy", "path": "/deploy" },
         "tags": [
-          { "slug": "cloudflare", "text": "cloudflare" },
-          { "slug": "workers", "text": "workers" },
+          { "slug": "runtime", "text": "runtime" },
+          { "slug": "hosting", "text": "hosting" },
           { "slug": "deploy", "text": "deploy" }
         ]
       },
