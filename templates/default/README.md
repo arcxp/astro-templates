@@ -69,6 +69,14 @@ pnpm run deploy --env <name>
 
 `--env` is **required** — there is no default, so a deploy can't silently target the wrong environment. Pass `--dry-run` to preview what would ship without uploading, or `--force` to re-deploy an unchanged build.
 
+**Secrets are provisioned for you.** After the upload, `arc deploy` reads every variable your `astro.config.ts` declares with `access: "secret"` (here, `ARC_API_TOKEN`) from the environment the deploy runs in and sets it as a secret on the deployed Worker — so a live-mode site can reach the Arc Content API. Provide the value at deploy time; don't commit it:
+
+```sh
+ARC_API_TOKEN=… pnpm run deploy --env <name>
+```
+
+`--dry-run` lists the secret **names** that would be set (never their values). A required secret that's missing fails the deploy before uploading (`[ARC_E007]`); `ARC_API_TOKEN` is optional, so a fixtures build deploys without it.
+
 ## Linking inside vs. outside your MX
 
 By default `arc.config.ts` sets `path: "/"`, so the site is served from the domain root. Change `path` to something like `/news` and `@arc/astro` wires that value through to Astro's `base` — the site's own routes now live under `/news`, and the mount prefix is exposed to every page/component as the Vite constant **`import.meta.env.BASE_URL`** (e.g. `"/news/"`).
@@ -107,4 +115,4 @@ Copy `.env.example` to `.env` to get started with local defaults:
 cp .env.example .env
 ```
 
-Set these in a `.env` file at the project root for local development. In production, inject them as secrets through your deployment platform's secret manager.
+Set these in a `.env` file at the project root for local development. For a deploy, set the secrets (e.g. `ARC_API_TOKEN`) in the environment you run `arc deploy` in — it provisions every `access: "secret"` variable onto the Worker automatically (see [Deploy](#deploy)). You don't inject them by hand through a separate secret manager.
