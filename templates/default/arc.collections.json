@@ -349,7 +349,7 @@
         },
         {
           "_id": "el-d5",
-          "content": "Inject <code>ARC_API_TOKEN</code> through your deployment platform's secret manager. The token is scoped to your org + site + env in the Arc dashboard.",
+          "content": "Set <code>ARC_API_TOKEN</code> in the environment you run <code>arc deploy</code> in — it provisions every <code>access: \"secret\"</code> variable onto the Worker for you. The token is scoped to your org + site + env in the Arc dashboard.",
           "type": "text"
         }
       ],
