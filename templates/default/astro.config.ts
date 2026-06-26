@@ -1,9 +1,9 @@
-import cloudflare from "@astrojs/cloudflare";
-import { defineConfig, envField } from "astro/config";
 import arc from "@arc/astro";
+import { arcAdapter } from "@arc/astro/adapter";
+import { defineConfig, envField } from "astro/config";
 
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: arcAdapter(),
   env: {
     schema: {
       ARC_API_TOKEN: envField.string({ access: "secret", context: "server", optional: true }),
