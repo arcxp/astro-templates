@@ -2,6 +2,12 @@
 
 A minimal Astro site with the `@arc/astro` integration wired in.
 
+## Deploy target (Arc-managed adapter)
+
+Arc wires the deploy target for you. `astro.config.ts` sets `adapter: arcAdapter()` (from `@arc/astro/adapter`) and `integrations: [arc()]` — app code never imports a platform adapter package directly. To change or configure the target, go through Arc, not the adapter package.
+
+`@astrojs/cloudflare` is listed in this project's `package.json` as an **Arc-managed dependency**. Do not import it in your app code, and do not remove it either: Astro/Vite resolve the adapter's server entrypoint (a bare `@astrojs/cloudflare/entrypoints/server` specifier) from the project root at `arc dev` / `arc build` time. If it is missing from `package.json`, the build fails with `Failed to resolve main entry file @astrojs/cloudflare/entrypoints/server`. Leave it declared and let Arc manage its version.
+
 ## Scaffold
 
 ```sh
