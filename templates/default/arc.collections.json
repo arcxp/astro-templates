@@ -211,7 +211,7 @@
         },
         {
           "_id": "el-w5",
-          "content": "Set <code>ARC_API_TOKEN</code> in <code>.env</code> and unset <code>ARC_USE_FIXTURES</code>. The same pages now render whatever your Arc Content API returns — no code changes.",
+          "content": "Set <code>ARC_API_TOKEN</code> in <code>.env</code> and drop the <code>--use-fixtures</code> flag from <code>arc dev</code>. The same pages now render whatever your Arc Content API returns — no code changes.",
           "type": "text"
         }
       ],
@@ -280,7 +280,7 @@
         },
         {
           "_id": "el-l5",
-          "content": "Two factories — <code>arcCollections({ alias })</code> for section fronts and <code>arcStory()</code> for individual stories. Both honor <code>ARC_USE_FIXTURES</code> so you can develop offline.",
+          "content": "Two factories — <code>arcCollections({ alias })</code> for section fronts and <code>arcStory()</code> for individual stories. Both honor <code>arc dev --use-fixtures</code> so you can develop offline.",
           "type": "text"
         }
       ],
